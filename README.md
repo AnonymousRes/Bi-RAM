@@ -53,15 +53,11 @@ After preparing the datasets, place them in your local data directory and update
 
 You can train or evaluate Bi-RAM by running the scripts provided in the corresponding script directories.
 
-For LRA tasks:
+For LRA & UEA:
 
 ```bash
 cd run_lra
 bash lra_all.sh
 
-
-For UEA tasks:
-
-```bash
 cd Biram_TimeSeries/scripts/
 bash biram.sh
