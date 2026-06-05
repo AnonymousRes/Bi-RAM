@@ -33,9 +33,7 @@ To ensure reproducibility, we provide the following core assets:
 
 Before running the LRA scripts, please download the processed LRA datasets.
 
-The processed LRA data can be obtained from the **[MEGA repository](https://github.com/facebookresearch/mega/tree/main/examples/mega)**. Specifically, you may download the processed data here:
-
-[https://dl.fbaipublicfiles.com/mega/data/lra.zip](https://dl.fbaipublicfiles.com/mega/data/lra.zip)
+The processed LRA data can be obtained from the **[MEGA repository](https://github.com/facebookresearch/mega/tree/main/examples/mega)**.
 
 *Note: The original raw data is from the [Google LRA repository](https://github.com/google-research/long-range-arena).*
 
