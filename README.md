@@ -12,7 +12,7 @@ This is the PyTorch implementation of the Bi-RAM paper.
 
 ## Acknowledgment
 
-This codebase is based on and modified from the highly successful **[MEGA repository](https://github.com/facebookresearch/mega/blob/main/examples/mega/README.lra.md)**. We sincerely thank the authors of MEGA for their excellent open-source framework.
+This codebase is based on and modified from the excellent open-source implementations of **[MEGA](https://github.com/facebookresearch/mega/tree/main/examples/mega)** and **[Flowformer](https://github.com/thuml/Flowformer/tree/main/Flowformer_TimeSeries)**. We sincerely thank the authors of MEGA and Flowformer for releasing their code and experimental frameworks. The LRA and UEA datasets used in this repository can also be obtained following the data preparation instructions provided in these two projects.
 
 
 ## Repository Structure
@@ -23,26 +23,32 @@ To ensure reproducibility, we provide the following core assets:
 * `out_log/`: Contains the complete training logs. These logs record the hyperparameter settings and configurations used for LRA.
 * `run_lra/`: Contains executable shell scripts (`.sh`) for training and evaluation on the LRA benchmark.
 * `Biram_TimeSeries/out_log/`: Contains the complete training logs. These logs record the hyperparameter settings and configurations used for UEA.
-* `Biram_TimeSeries/results/`: Contains the complete results.
-* `Biram_TimeSeries/scripts/biram.sh`: `biram.sh` for training and evaluation on the UEA multivariate time-series classification benchmark.
+* `Biram_TimeSeries/results/`: Contains the complete UEA experimental results.
+* `Biram_TimeSeries/scripts/biram.sh`: Executable script for training and evaluation on the UEA multivariate time-series classification benchmark.
+* `fairseq/`: Contains the core implementation of Bi-RAM for LRA experiments.
+* `Biram_TimeSeries/`: Contains the implementation and scripts for UEA time-series classification experiments.
 
 
 ## LRA Data Preparation
 
 Before running the LRA scripts, please download the processed LRA datasets.
 
-Download the [processed data here](https://dl.fbaipublicfiles.com/mega/data/lra.zip), which is provided by the MEGA repository.
+The processed LRA data can be obtained from the **[MEGA repository](https://github.com/facebookresearch/mega/tree/main/examples/mega)**. Specifically, you may download the processed data here:
+
+[https://dl.fbaipublicfiles.com/mega/data/lra.zip](https://dl.fbaipublicfiles.com/mega/data/lra.zip)
 
 *Note: The original raw data is from the [Google LRA repository](https://github.com/google-research/long-range-arena).*
 
-Extract the downloaded `lra.zip` to a directory on your machine.
+Extract the downloaded `lra.zip` to a directory on your machine, and update the `DATA` path in the scripts under `run_lra/` before execution.
 
 
 ## UEA Data Preparation
 
-Before running the UEA scripts, please prepare the UEA multivariate time-series classification datasets according to the data format used by the corresponding experiment scripts.
+Before running the UEA scripts, please prepare the UEA multivariate time-series classification datasets.
 
-Please place the processed UEA datasets in your local data directory and update the data path in the scripts under `Biram_TimeSeries/scripts/` before execution.
+The UEA data preparation follows the **[Flowformer TimeSeries repository](https://github.com/thuml/Flowformer/tree/main/Flowformer_TimeSeries)**. Please download and organize the datasets according to the instructions provided in the Flowformer project.
+
+After preparing the datasets, place them in your local data directory and update the data path in the scripts under `Biram_TimeSeries/scripts/` before execution.
 
 
 ## How to Use
@@ -53,4 +59,10 @@ For LRA tasks:
 
 ```bash
 cd run_lra
-bash listops.sh
+bash lra_all.sh
+
+For UEA tasks:
+
+```bash
+cd Biram_TimeSeries/scripts/
+bash biram.sh
