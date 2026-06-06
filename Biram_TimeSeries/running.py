@@ -214,7 +214,7 @@ def validate(val_evaluator, tensorboard_writer, config, best_metrics, best_value
         best_metrics = aggr_metrics.copy()
 
         pred_filepath = os.path.join(config['pred_dir'], 'best_predictions')
-        # 添加 dtype=object 强制允许不规则形状的数组保存
+        
         safe_per_batch = {k: np.array(v, dtype=object) for k, v in per_batch.items()}
         np.savez(pred_filepath, **safe_per_batch)
 
