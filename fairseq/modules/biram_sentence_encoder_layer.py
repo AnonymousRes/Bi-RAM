@@ -36,14 +36,13 @@ def apply_attention(query, key, value, attn_padding_mask=None):
 def bi_ram(x: torch.Tensor, gate: torch.Tensor) -> torch.Tensor:
     """
     Bidirectional Recalibrated Aggregated Memory (Bi-RAM)
-    双向重校准聚合记忆算子 (通道独立版)
 
     Args:
-        x:    (B, L, D) 输入特征张量
-        gate: (B, L, D) 门控 Logits (未经激活的原始得分，与 x 维度完全对齐)
+        x:    (B, L, D)
+        gate: (B, L, D)
 
     Returns:
-        out:  (B, L, D) 经过双向特征聚合与重校准后的输出
+        out:  (B, L, D)
     """
     logits = gate
 
