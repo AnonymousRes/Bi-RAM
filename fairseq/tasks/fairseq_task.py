@@ -388,7 +388,7 @@ class FairseqTask(object):
         with torch.autograd.profiler.record_function("backward"):
             optimizer.backward(loss)
 
-        # # 计算总梯度范数
+        # # Compute the total gradient norm.
         # if update_num % (195*5) == 0:
         #     total_norm = 0.0
         #     print('************************************update_num=',update_num, "************************************")
@@ -399,15 +399,15 @@ class FairseqTask(object):
         #     total_norm = total_norm ** 0.5
         #     print(f"Gradient Norm: {total_norm:.4f}")
         #
-        #     # 打印各层梯度统计
+        #     # Print gradient statistics for each layer.
         #     for name, param in model.named_parameters():
         #         if param.grad is not None:
         #             print(f"{name} grad: mean={param.grad.mean():.4e}, std={param.grad.std():.4e}")
         #     print('************************************update_num=',update_num, "************************************")
-        # ====== 纯训练阶段显存极值统计 ======
+        # ====== Peak GPU Memory Usage During Training Only ======
         if update_num > 0 and update_num % 100 == 0:
             if torch.cuda.is_available():
-                # 依然加上 475 补偿 CUDA 上下文开销
+                # Including an additional 475 MB compensation for CUDA context overhead.
                 max_mem_mb = (torch.cuda.max_memory_reserved() / (1024 ** 2)) + 475
                 logger.info(f"[Train Step {update_num}] Max GPU Memory Used: {max_mem_mb:.2f} MiB")
         # ==================================
