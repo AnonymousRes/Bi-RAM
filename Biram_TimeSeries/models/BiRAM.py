@@ -284,7 +284,6 @@ class BiRAMSentenceEncoderLayer(nn.Module):
         self.block_count = block_count
         self.block_size = block_size
 
-        # 替换 Fairseq 依赖，使用标准 PyTorch 模块
         self.dropout_module = nn.Dropout(dropout)
         self.activation_dropout_module = nn.Dropout(activation_dropout)
         self.activation_fn = _get_activation_fn(activation_fn)
@@ -377,7 +376,6 @@ class BiRAMClassiregressor(nn.Module):
         inp = self.input_norm(inp)
 
         # Generate block keys and values via Bi-RAM Layer
-        # 注意：此处 biraml 返回的是 [B, block_count, D] 维度的提取特征
         key = value = self.biraml(inp)
 
         # Pass through stacked Bi-RAM Sentence Encoder Layers
