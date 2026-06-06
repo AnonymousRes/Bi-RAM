@@ -800,22 +800,6 @@ def biram_lra_pf32(args):
 #     args.sen_rep_type = getattr(args, 'sen_rep_type', 'mp')
 
 
-# @register_model_architecture('lra', 'transformer_lra_pf128')
-# def mamba_lra_pf128(args):
-#     args.apply_bert_init = getattr(args, 'apply_bert_init', False)
-#     args.layer_type = getattr(args, 'layer_type', 'mamba')
-#     args.encoder_layers = getattr(args, 'encoder_layers', 4)
-#     args.activation_fn = getattr(args, 'activation_fn', 'silu')
-#     args.encoder_embed_dim = getattr(args, 'encoder_embed_dim', 64)
-#     args.norm_type = getattr(args, 'norm_type', 'batchnorm')
-#     args.classifier_layers = getattr(args, 'classifier_layers', 1)
-#     args.classifier_out_dim = getattr(args, 'classifier_out_dim', 128)
-#     args.sentence_class_num = getattr(args, 'sentence_class_num', 2)
-#     args.max_positions = getattr(args, 'max_positions', 128 * 128)
-#     args.sen_rep_type = getattr(args, 'sen_rep_type', 'mp')
-#     base_architecture(args)
-
-
 @register_model_architecture('lra', 'mega_lra_pf128')
 def mega_lra_pf128(args):
     args.apply_bert_init = getattr(args, 'apply_bert_init', False)
