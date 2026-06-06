@@ -29,6 +29,3 @@ python -u /workspace/Bi-RAM/train.py ${DATA} \
    --save-dir ${SAVE} --log-format simple --log-interval 1000 --num-workers 0 | tee -a ${SAVE_LOG}/${exp_name}_log.txt
 
 python /workspace/Bi-RAM/fairseq_cli/validate.py ${DATA} --task lra-text --batch-size 64 --valid-subset test --path ${SAVE}/checkpoint_best.pt | tee -a ${SAVE_LOG}/${exp_name}_log.txt
-#
-#python ~/projects/Lee_HP1203/fairseq_cli/validate.py ${DATA} --task lra-text --batch-size 64 --valid-subset test --path ${SAVE}/checkpoint_best.pt | tee -a ${SAVE_LOG}/${exp_name}_log.txt
-#    --lr-scheduler fixed --total-num-update 90000 --end-learning-rate 0.0 --warmup-updates 3000 --warmup-init-lr '1e-07' \
