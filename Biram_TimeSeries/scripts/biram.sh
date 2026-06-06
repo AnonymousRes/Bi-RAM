@@ -34,4 +34,4 @@ python /workspace/Bi-RAM/Biram_TimeSeries/main.py --model biram --output_dir /wo
 
 chmod -R 777 /workspace/Bi-RAM/Biram_TimeSeries/results/
 chmod -R 777 /workspace/Bi-RAM/Biram_TimeSeries/out_log/
-echo "Final LR Surgery applied. Computing theoretical limits!"
+echo "Done!"
