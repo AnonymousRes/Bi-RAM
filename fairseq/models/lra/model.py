@@ -24,8 +24,6 @@ from fairseq.models.lra.luna_lra_encoder import LunaLRAEncoder
 from fairseq.models.lra.lstm_lra_encoder import LSTMLRAEncoder
 from fairseq.models.lra.flash_lra_encoder import FlashLRAEncoder
 from fairseq.models.lra.mega_lra_encoder import MegaLRAEncoder
-from fairseq.models.lra.mamba_lra_encoder import MambaLRAEncoder
-from fairseq.models.lra.mamba2_lra_encoder import Mamba2LRAEncoder
 from fairseq.models.lra.biram_lra_encoder import BiRAMLRAEncoder
 from fairseq.modules.transformer_sentence_encoder import init_bert_params
 
@@ -189,7 +187,7 @@ class LRAModel(FairseqEncoderModel):
         src_lengths = sample['net_input']['src_lengths']
         sentence_rep = self.encoder(src_tokens, src_lengths)
         if not self.use_p:
-            if self.layer_type in ['transformer', 'lstm', 'flash', 'mega', 'biram', 'mamba','mamba2']:
+            if self.layer_type in ['transformer', 'lstm', 'flash', 'mega', 'biram']:
                 sentence_rep = sentence_rep[1]
                 # print('if not self.use_p:', sentence_rep.shape)
             elif self.layer_type == 'luna':
@@ -204,7 +202,7 @@ class LRAModel(FairseqEncoderModel):
             sentence1_rep = self.encoder(src1_tokens, src1_lengths)
             if not self.use_p:
                 # print(self.use_p)
-                if self.layer_type in ['transformer', 'lstm', 'flash', 'mega', 'biram', 'mamba', 'mamba2']:
+                if self.layer_type in ['transformer', 'lstm', 'flash', 'mega', 'biram']:
                     sentence1_rep = sentence1_rep[1]
                 elif self.layer_type == 'luna':
                     sentence1_rep = sentence1_rep[1][0]
@@ -240,7 +238,7 @@ class LRAModel(FairseqEncoderModel):
             args.max_source_positions = args.max_positions
         if not hasattr(args, 'decoder_embed_dim'):
             args.decoder_embed_dim = args.encoder_embed_dim
-        # args.max_positions = args.max_len  # 1 2 3 4 5 ... 10k length search
+        # args.max_positions = args.max_len
         encoder = LRAEncoder(args, task)
         return cls(args, encoder, task)
 
@@ -361,40 +359,6 @@ class LRAEncoder(FairseqEncoder):
                 encoder_normalize_before=getattr(args, "encoder_normalize_before", False),
                 apply_bert_init=getattr(args, "apply_bert_init", False),
                 activation_fn=args.activation_fn,
-                learned_pos_embedding=args.encoder_learned_pos,
-                sen_rep_type=getattr(args, 'sen_rep_type', 'cls')
-            )
-        elif args.layer_type == 'mamba':
-            self.encoder = MambaLRAEncoder(
-                tie_layer_weights=getattr(args, 'tie_layer_weights', False),
-                padding_idx=padding_idx,
-                vocab_size=vocab_size,
-                num_encoder_layers=args.encoder_layers,
-                embedding_type=embedding_type,
-                embedding_dim=args.encoder_embed_dim,
-                dropout=args.dropout,
-                max_seq_len=args.max_positions,
-                use_position_embeddings=True,
-                offset_positions_by_padding=offset_positions_by_padding,
-                encoder_normalize_before=getattr(args, "encoder_normalize_before", False),
-                apply_bert_init=getattr(args, "apply_bert_init", False),
-                learned_pos_embedding=args.encoder_learned_pos,
-                sen_rep_type=getattr(args, 'sen_rep_type', 'cls')
-            )
-        elif args.layer_type == 'mamba2':
-            self.encoder = Mamba2LRAEncoder(
-                tie_layer_weights=getattr(args, 'tie_layer_weights', False),
-                padding_idx=padding_idx,
-                vocab_size=vocab_size,
-                num_encoder_layers=args.encoder_layers,
-                embedding_type=embedding_type,
-                embedding_dim=args.encoder_embed_dim,
-                dropout=args.dropout,
-                max_seq_len=args.max_positions,
-                use_position_embeddings=True,
-                offset_positions_by_padding=offset_positions_by_padding,
-                encoder_normalize_before=getattr(args, "encoder_normalize_before", False),
-                apply_bert_init=getattr(args, "apply_bert_init", False),
                 learned_pos_embedding=args.encoder_learned_pos,
                 sen_rep_type=getattr(args, 'sen_rep_type', 'cls')
             )
@@ -594,38 +558,6 @@ def biram_lra_imdb(args):
     base_architecture(args)
 
 
-@register_model_architecture('lra', 'mamba_lra_imdb')
-def mamba_lra_imdb(args):
-    args.layer_type = getattr(args, 'layer_type', 'mamba')
-    args.apply_bert_init = getattr(args, 'apply_bert_init', False)
-    args.max_positions = getattr(args, 'max_positions', 4002)
-    args.encoder_normalize_before = getattr(args, 'encoder_normalize_before', True)
-    args.encoder_ffn_embed_dim = getattr(args, 'encoder_ffn_embed_dim', 256)
-    args.encoder_layers = getattr(args, 'encoder_layers', 4)
-    args.activation_fn = getattr(args, 'activation_fn', 'silu')
-    args.encoder_embed_dim = getattr(args, 'encoder_embed_dim', 256)
-    args.encoder_attention_heads = getattr(args, 'encoder_attention_heads', 4)
-    args.classifier_layers = getattr(args, 'classifier_layers', 1)
-    args.classifier_out_dim = getattr(args, 'classifier_out_dim', 256)
-    base_architecture(args)
-
-
-@register_model_architecture('lra', 'mamba2_lra_imdb')
-def mamba2_lra_imdb(args):
-    args.layer_type = getattr(args, 'layer_type', 'mamba2')
-    args.apply_bert_init = getattr(args, 'apply_bert_init', False)
-    args.max_positions = getattr(args, 'max_positions', 4002)
-    args.encoder_normalize_before = getattr(args, 'encoder_normalize_before', True)
-    args.encoder_ffn_embed_dim = getattr(args, 'encoder_ffn_embed_dim', 256)
-    args.encoder_layers = getattr(args, 'encoder_layers', 4)
-    args.activation_fn = getattr(args, 'activation_fn', 'silu')
-    args.encoder_embed_dim = getattr(args, 'encoder_embed_dim', 256)
-    args.encoder_attention_heads = getattr(args, 'encoder_attention_heads', 4)
-    args.classifier_layers = getattr(args, 'classifier_layers', 1)
-    args.classifier_out_dim = getattr(args, 'classifier_out_dim', 256)
-    base_architecture(args)
-
-
 @register_model_architecture('lra', 'transformer_lra_aan')
 def transformer_lra_aan_architecture(args):
     args.apply_bert_init = getattr(args, 'apply_bert_init', False)
@@ -750,34 +682,6 @@ def biram_lra_cifar10(args):
     args.encoder_layers = getattr(args, 'encoder_layers', 8)
     args.encoder_embed_dim = getattr(args, 'encoder_embed_dim', 160)
     args.encoder_attention_heads = getattr(args, 'encoder_attention_heads', 8)
-    args.classifier_layers = getattr(args, 'classifier_layers', 1)
-    args.classifier_out_dim = getattr(args, 'classifier_out_dim', 320)
-    args.sentence_class_num = getattr(args, 'sentence_class_num', 10)
-    args.max_positions = getattr(args, 'max_positions', 1024)
-    args.encoder_normalize_before = getattr(args, 'encoder_normalize_before', True)
-    base_architecture(args)
-
-
-@register_model_architecture('lra', 'mamba_lra_cifar10')
-def mamba_lra_cifar10(args):
-    args.apply_bert_init = getattr(args, 'apply_bert_init', False)
-    args.layer_type = getattr(args, 'layer_type', 'mamba')
-    args.encoder_layers = getattr(args, 'encoder_layers', 8)
-    args.encoder_embed_dim = getattr(args, 'encoder_embed_dim', 160)
-    args.classifier_layers = getattr(args, 'classifier_layers', 1)
-    args.classifier_out_dim = getattr(args, 'classifier_out_dim', 320)
-    args.sentence_class_num = getattr(args, 'sentence_class_num', 10)
-    args.max_positions = getattr(args, 'max_positions', 1024)
-    args.encoder_normalize_before = getattr(args, 'encoder_normalize_before', True)
-    base_architecture(args)
-
-
-@register_model_architecture('lra', 'mamba2_lra_cifar10')
-def mamba2_lra_cifar10(args):
-    args.apply_bert_init = getattr(args, 'apply_bert_init', False)
-    args.layer_type = getattr(args, 'layer_type', 'mamba2')
-    args.encoder_layers = getattr(args, 'encoder_layers', 8)
-    args.encoder_embed_dim = getattr(args, 'encoder_embed_dim', 160)
     args.classifier_layers = getattr(args, 'classifier_layers', 1)
     args.classifier_out_dim = getattr(args, 'classifier_out_dim', 320)
     args.sentence_class_num = getattr(args, 'sentence_class_num', 10)
