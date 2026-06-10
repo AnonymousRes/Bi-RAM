@@ -55,12 +55,14 @@ You can train or evaluate Bi-RAM by running the scripts provided in the correspo
 
 For LRA & UEA:
 
-```bash
+```
+bash
 cd run_lra
 bash lra_all.sh
 
 cd Biram_TimeSeries/scripts/
 bash biram.sh
+```
 
 
 
