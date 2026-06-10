@@ -92,17 +92,3 @@ Please follow the steps below:
 3. Copy `fairseq/models/lra/model.py` from this repository and use it to replace the original `model.py` file in MEGA's `fairseq/models/lra/` directory.
 
 After these files are replaced, Bi-RAM can be trained and evaluated using MEGA's original experimental pipeline.
-
-
-## Citation
-
-If you find this repository useful for your research, please consider citing our paper:
-
-~~~bibtex
-@article{biram,
-  title={Bi-RAM: Bidirectional Recalibrated Aggregated Memory-Based Transformer for Efficient Sequential Modeling},
-  author={},
-  journal={Under Review},
-  year={}
-}
-~~~
