@@ -1,79 +1,108 @@
 <h1 align="center">Bi-RAM: Bidirectional Recalibrated Aggregated Memory-Based Transformer for Efficient Sequential Modeling</h1>
 
-This is the PyTorch implementation of the Bi-RAM paper.
-
 <p align="center">
   <img src="Bi-RAM.png" alt="Bi-RAM" width="888">
 </p>
 
+<p align="center">
+  <b>PyTorch implementation of Bi-RAM</b>
+</p>
+
 > [**Bi-RAM: Bidirectional Recalibrated Aggregated Memory-Based Transformer for Efficient Sequential Modeling**]  
-> (Under Review)
+> Status: Under Review
+
+
+## Overview
+
+This repository provides the official PyTorch implementation of **Bi-RAM**, a bidirectional recalibrated aggregated memory-based Transformer designed for efficient sequential modeling. It includes the core implementation, training and evaluation scripts, pretrained checkpoints, training logs, and experimental results for the Long Range Arena (LRA) benchmark and the UEA multivariate time-series classification benchmark.
 
 
 ## Acknowledgment
 
-This codebase is based on and modified from the excellent open-source implementations of **[MEGA](https://github.com/facebookresearch/mega/tree/main/examples/mega)** and **[Flowformer](https://github.com/thuml/Flowformer/tree/main/Flowformer_TimeSeries)**. We sincerely thank the authors of MEGA and Flowformer for releasing their code and experimental frameworks. The LRA and UEA datasets used in this repository can also be obtained following the data preparation instructions provided in these two projects.
+This codebase is built upon and adapted from the excellent open-source implementations of **[MEGA](https://github.com/facebookresearch/mega/tree/main/examples/mega)** and **[Flowformer](https://github.com/thuml/Flowformer/tree/main/Flowformer_TimeSeries)**.
+
+We sincerely thank the authors of MEGA and Flowformer for releasing their codebases and experimental frameworks. The LRA and UEA datasets used in this repository can also be prepared by following the data preparation instructions provided in the corresponding MEGA and Flowformer repositories.
 
 
 ## Repository Structure
 
-To ensure reproducibility, we provide the following core assets:
+The repository is organized as follows:
 
-* `LRA_checkpoint/`: Contains the pre-trained model weights for LRA.
-* `out_log/`: Contains the complete training logs. These logs record the hyperparameter settings and configurations used for LRA.
-* `run_lra/`: Contains executable shell scripts (`.sh`) for training and evaluation on the LRA benchmark.
-* `Biram_TimeSeries/out_log/`: Contains the complete training logs. These logs record the hyperparameter settings and configurations used for UEA.
-* `Biram_TimeSeries/results/`: Contains the complete UEA experimental results.
-* `Biram_TimeSeries/scripts/biram.sh`: Executable script for training and evaluation on the UEA multivariate time-series classification benchmark.
-* `fairseq/`: Contains the core implementation of Bi-RAM for LRA experiments.
-* `Biram_TimeSeries/`: Contains the implementation and scripts for UEA time-series classification experiments.
+* `LRA_checkpoint/`: Pretrained model checkpoints for LRA experiments.
+* `out_log/`: Complete training logs for LRA experiments, including hyperparameter settings and configurations.
+* `run_lra/`: Shell scripts for training and evaluating Bi-RAM on the LRA benchmark.
+* `fairseq/`: Core implementation of Bi-RAM for LRA experiments.
+* `Biram_TimeSeries/`: Implementation and scripts for UEA multivariate time-series classification.
+* `Biram_TimeSeries/out_log/`: Complete training logs for UEA experiments, including hyperparameter settings and configurations.
+* `Biram_TimeSeries/results/`: Complete experimental results on the UEA benchmark.
+* `Biram_TimeSeries/scripts/biram.sh`: Shell script for training and evaluating Bi-RAM on the UEA benchmark.
 
 
 ## LRA Data Preparation
 
-Before running the LRA scripts, please download the processed LRA datasets.
+Before running the LRA experiments, please download the processed LRA datasets.
 
 The processed LRA data can be obtained from the **[MEGA repository](https://github.com/facebookresearch/mega/tree/main/examples/mega)**.
 
-*Note: The original raw data is from the [Google LRA repository](https://github.com/google-research/long-range-arena).*
+The original raw LRA data is provided by the **[Google Long Range Arena repository](https://github.com/google-research/long-range-arena)**.
 
-Extract the downloaded `lra.zip` to a directory on your machine, and update the `DATA` path in the scripts under `run_lra/` before execution.
+After downloading the processed `lra.zip` file, extract it to a local directory and update the `DATA` path in the scripts under `run_lra/` accordingly.
 
 
 ## UEA Data Preparation
 
-Before running the UEA scripts, please prepare the UEA multivariate time-series classification datasets.
+Before running the UEA experiments, please prepare the UEA multivariate time-series classification datasets.
 
-The UEA data preparation follows the **[Flowformer TimeSeries repository](https://github.com/thuml/Flowformer/tree/main/Flowformer_TimeSeries)**. Please download and organize the datasets according to the instructions provided in the Flowformer project.
+The UEA data preparation follows the protocol used in the **[Flowformer TimeSeries repository](https://github.com/thuml/Flowformer/tree/main/Flowformer_TimeSeries)**. Please download and organize the datasets according to the instructions provided in the Flowformer project.
 
-After preparing the datasets, place them in your local data directory and update the data path in the scripts under `Biram_TimeSeries/scripts/` before execution.
+After the datasets are prepared, place them in your local data directory and update the corresponding data paths in the scripts under `Biram_TimeSeries/scripts/`.
 
 
-## How to Use
+## Training and Evaluation
 
-You can train or evaluate Bi-RAM by running the scripts provided in the corresponding script directories.
+Bi-RAM can be trained and evaluated by running the provided shell scripts.
 
-For LRA & UEA:
 
-```
-bash
+### LRA Experiments
+
+~~~bash
 cd run_lra
 bash lra_all.sh
+~~~
 
+
+### UEA Experiments
+
+~~~bash
 cd Biram_TimeSeries/scripts/
 bash biram.sh
-```
+~~~
 
 
+## Alternative Integration with the MEGA Framework
 
-## What to do if you encounter errors (Alternative Execution)
+If you would like to run Bi-RAM directly within the original MEGA experimental framework, you can integrate the core Bi-RAM files into the MEGA repository.
 
-If you encounter any errors during training or inference when running this repository directly, you can easily resolve them by integrating our core files into the original MEGA repository.
+Please follow the steps below:
 
-Simply follow these 3 steps:
+1. Copy `fairseq/models/lra/biram_lra_encoder.py` from this repository to MEGA's `fairseq/models/lra/` directory.
 
-1. Copy `fairseq/models/lra/biram_lra_encoder.py` from this repo and paste it into MEGA's `fairseq/models/lra/` directory.
-2. Copy `fairseq/modules/biram_sentence_encoder_layer.py` from this repo and paste it into MEGA's `fairseq/modules/` directory.
-3. Copy `fairseq/models/lra/model.py` from this repo and **replace** the existing `model.py` in MEGA's `fairseq/models/lra/` directory.
+2. Copy `fairseq/modules/biram_sentence_encoder_layer.py` from this repository to MEGA's `fairseq/modules/` directory.
 
-After replacing these specific files, you can directly run the models using MEGA's original pipeline without any issues.
+3. Copy `fairseq/models/lra/model.py` from this repository and use it to replace the original `model.py` file in MEGA's `fairseq/models/lra/` directory.
+
+After these files are replaced, Bi-RAM can be trained and evaluated using MEGA's original experimental pipeline.
+
+
+## Citation
+
+If you find this repository useful for your research, please consider citing our paper:
+
+~~~bibtex
+@article{biram,
+  title={Bi-RAM: Bidirectional Recalibrated Aggregated Memory-Based Transformer for Efficient Sequential Modeling},
+  author={},
+  journal={Under Review},
+  year={}
+}
+~~~
