@@ -7,7 +7,7 @@
 Train a new model on one or across multiple GPUs.
 """
 import sys
-# sys.path.insert(0, "/workspace/Bi-RAM")
+sys.path.insert(0, "/workspace/Bi-RAM")
 import argparse
 import logging
 import math
